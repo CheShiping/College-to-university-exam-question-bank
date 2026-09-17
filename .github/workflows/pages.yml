@@ -43,12 +43,26 @@ jobs:
             fi
           done
 
+      - name: Fix internal KaTeX & entry links in subject pages (SCGSstudy/ -> site root)
+        run: |
+          # 本地布局为 高数/题库页.html -> ../SCGSstudy/katex；站点根下 SCGSstudy 摊平到根，需改为 ../katex、../index.html
+          for f in _site/*/题库页.html _site/*/错题集/*.html; do
+            sed -i 's|SCGSstudy/katex|katex|g; s|SCGSstudy/index.html|index.html|g' "$f"
+          done
+
       - name: Verify index links point to siblings (no ../ left)
         run: |
           if grep -qE '\.\./'"$(echo 计算机)"'|\.\./' _site/index.html; then
             echo "尚残留 ../ 链接"; grep -nE '\.\./' _site/index.html || true
           else
             echo "OK：入口页已无 ../ 前缀"
+          fi
+          # 三科页面内不得残留 SCGSstudy/ 路径引用（KaTeX 与返回入口）；正文文案/API 域名不算
+          if grep -rqE '(href|src)="[^"]*SCGSstudy/' _site/计算机 _site/高数 _site/英语; then
+            echo "尚残留 SCGSstudy/ 路径引用"; grep -rnE '(href|src)="[^"]*SCGSstudy/' _site/计算机 _site/高数 _site/英语 || true
+            exit 1
+          else
+            echo "OK：三科页面已无 SCGSstudy/ 路径引用"
           fi
 
       - name: Upload Pages artifact

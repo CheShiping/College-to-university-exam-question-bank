@@ -2,6 +2,16 @@
 
 > 原则：改动后在这里登记"做了什么 + 验证证据 + 下一步"。证据指向文件/命令结果，不要只写一句话。
 
+## 2026-09-17 · 修复 GitHub Pages 部署后公式不渲染 + 返回入口链接失效
+
+- **根因**：部署工作流把 KaTeX 与入口页摊平到站点根（`_site/katex/`、`_site/index.html`），但三科 `题库页.html`/`错题集/*.html` 内部引用仍是本地布局的 `../SCGSstudy/katex/...` 与 `../SCGSstudy/index.html`。站点挂在 `/College-to-university-exam-question-bank/` 子路径下，`../SCGSstudy/...` 解析到 `.../SCGSstudy/...` → 404，KaTeX 加载失败 → `$...$` 公式源码裸显；「返回错题本总入口」同样 404。
+- **修复**：`.github/workflows/pages.yml` 新增步骤，对 `_site/*/题库页.html` 与 `_site/*/错题集/*.html` 统一 sed `SCGSstudy/katex→katex`、`SCGSstudy/index.html→index.html`（`../`/`../../` 前缀保留，深度自动正确）；验证步骤改为检查 `href|src` 范围内无 `SCGSstudy/`（正文文案与 API 域名 `ai.scgsstudy.top` 不计入）。
+- **验证证据**：本地模拟完整装配 `_site` 并执行替换——
+  1. `高数/题库页.html`：`href="../katex/katex.min.css"`、`src="../katex/katex.min.js"`、`href="../index.html"`。
+  2. `高数/错题集/复习页.html`：`href="../../katex/..."`、`href="../../index.html"`。
+  3. 三科全部页面 `(href|src)="[^"]*SCGSstudy/` 残留 = 0；`_site/katex/katex.min.{js,css}`、`_site/index.html` 均存在（Test-Path True）。
+- 下一步：push 触发 Pages 重新部署后，在线打开 `https://cheshiping.github.io/College-to-university-exam-question-bank/高数/题库页.html` 复核公式渲染与返回入口跳转。
+
 ## 2026-09-17 · 交互动效修复 + 悬浮按钮缩小并加 Tooltip
 
 - **改动文件**：`SCGSstudy/build.py`（三处模板共有的 CSS 一次性替换）+ 重新生成全部产物。
