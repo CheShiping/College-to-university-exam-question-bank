@@ -2,6 +2,11 @@
 
 > 原则：改动后在这里登记"做了什么 + 验证证据 + 下一步"。证据指向文件/命令结果，不要只写一句话。
 
+## 2026-09-17 · 投稿按钮与 GitHub 按钮同规格：仅首页保留
+
+- **改动**：`SUBMIT_HTML` 只注入 `build_index`（SCGSstudy/index.html）——5 个非首页注入点（REVIEW/WORD/单词本/生词本/TIKU）改为仅注入 `AI_HTML`；投稿按钮的 Tooltip 样式从共享块移入 `SUBMIT_HTML` 自带 `<style>`（其 JS 有 `if(!modal||!fab) return` 空值保护，无元素时安全返回）。至此首页三个浮动按钮（投稿 88 / AI 52 / GitHub 16），其他页面仅 AI 助手一个。
+- **验证**：`python SCGSstudy/build.py` 全量重建成功；grep `id="subFab"` 仅命中 index.html；index 含 `#subFab::after` Tooltip 与 `#ghFab`；抽查高数题库页仅 `id="aiFab"`、无 subFab/subModal、无死选择器。
+
 ## 2026-09-17 · 新增 GitHub 仓库悬浮按钮
 
 - **改动（v2：仅首页）**：按用户要求 GitHub 按钮只在首页显示——从共享 `AI_HTML` 拆出独立 `GITHUB_HTML` 组件（按钮 + 自含样式 + 同款 Tooltip），仅在 `build_index`（SCGSstudy/index.html）注入；`AI_HTML` 恢复 aiFab/subFab 共享 Tooltip，其余页面零 ghFab 痕迹。

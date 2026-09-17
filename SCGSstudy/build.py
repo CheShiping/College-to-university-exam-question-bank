@@ -1266,7 +1266,7 @@ AI_HTML = r"""
   display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;
   box-shadow:0 4px 14px rgba(4,100,97,.4);-webkit-tap-highlight-color:transparent;user-select:none;}
 /* Tooltip（设计系统浮层族 §4.14：深底白字 12px / 6px 10px / radius-sm / shadow-e2 / 300ms 延迟 / fast ease-out） */
-#aiFab::after,#subFab::after{
+#aiFab::after{
   content:attr(data-tip);
   position:absolute;right:calc(100% + 8px);top:50%;transform-origin:right center;
   transform:translateY(-50%) translateX(-4px);
@@ -1276,7 +1276,7 @@ AI_HTML = r"""
   transition:opacity var(--d-fast) var(--ease-out),transform var(--d-fast) var(--ease-out);
   transition-delay:0s;
 }
-#aiFab:hover::after,#aiFab:focus-visible::after,#subFab:hover::after,#subFab:focus-visible::after{
+#aiFab:hover::after,#aiFab:focus-visible::after{
   opacity:1;transform:translateY(-50%) translateX(0);transition-delay:.3s;
 }
 #aiPanel{position:fixed;right:16px;bottom:86px;width:min(360px,calc(100vw - 32px));height:min(480px,calc(100vh - 120px));
@@ -1525,7 +1525,18 @@ SUBMIT_HTML = r"""
     </div>
   </div>
 </div>
-<button id="subFab" data-tip="投稿题目" aria-label="投稿题目" style="position:fixed;right:16px;bottom:88px;z-index:99970;width:26px;height:26px;border-radius:50%;border:none;background:linear-gradient(135deg,#046461,#03514F);color:#fff;font-size:12px;cursor:pointer;box-shadow:0 6px 20px rgba(4,100,97,0.4);display:flex;align-items:center;justify-content:center;">📮</button>
+<button id="subFab" data-tip="投稿题目" aria-label="投稿题目" style="position:fixed;right:16px;bottom:88px;z-index:99970;width:26px;height:26px;border-radius:50%;border:none;background:linear-gradient(135deg,#046461,#03514F);color:#fff;font-size:12px;cursor:pointer;box-shadow:0 6px 20px rgba(4,100,97,0.4);display:flex;align-items:center;justify-content:center;">📮</button>
+<style>
+#subFab::after{content:attr(data-tip);
+  position:absolute;right:calc(100% + 8px);top:50%;transform-origin:right center;
+  transform:translateY(-50%) translateX(-4px);
+  background:#16140F;color:#fff;font-size:12px;line-height:1;white-space:nowrap;
+  padding:6px 10px;border-radius:var(--radius-sm);box-shadow:var(--shadow-e2);
+  pointer-events:none;opacity:0;
+  transition:opacity var(--d-fast) var(--ease-out),transform var(--d-fast) var(--ease-out);
+  transition-delay:0s;}
+#subFab:hover::after,#subFab:focus-visible::after{opacity:1;transform:translateY(-50%) translateX(0);transition-delay:.3s;}
+</style>
 <script>
 (function(){
   var modal=document.getElementById('subModal'), fab=document.getElementById('subFab');
@@ -2681,7 +2692,7 @@ def build_review(sub):
             .replace("__INDEX__", "../../SCGSstudy/index.html"))
     html = html.replace("var MATH = __MATH_MODE__;",
                         "var MATH = %s;" % ("true" if mode == "math" else "false"))
-    html = html.replace("</body>", AI_HTML + SUBMIT_HTML + "\n</body>")
+    html = html.replace("</body>", AI_HTML + "\n</body>")
     out = d / "复习页.html"
     out.write_text(html, encoding="utf-8")
     return items
@@ -2695,7 +2706,7 @@ def build_wordcard(sub):
     html = (WORD_HTML
             .replace("__WORDS_JSON__", js_safe(items))
             .replace("__INDEX__", "../../SCGSstudy/index.html"))
-    html = html.replace("</body>", AI_HTML + SUBMIT_HTML + "\n</body>")
+    html = html.replace("</body>", AI_HTML + "\n</body>")
     out = d / "单词卡.html"
     out.write_text(html, encoding="utf-8")
     return items
@@ -2742,7 +2753,7 @@ def build_wordbook(sub):
     html = (tpl
             .replace("__WORDS_JSON__", js_safe(words))
             .replace("__INDEX__", "../../SCGSstudy/index.html"))
-    html = html.replace("</body>", AI_HTML + SUBMIT_HTML + "\n</body>")
+    html = html.replace("</body>", AI_HTML + "\n</body>")
     out = d / "单词本.html"
     out.write_text(html, encoding="utf-8")
     return words
@@ -2758,7 +2769,7 @@ def build_shengci(sub):
             .replace("__WORDS_JSON__", js_safe(words))
             .replace("__MANUAL_JSON__", js_safe(manual))
             .replace("__INDEX__", "../../SCGSstudy/index.html"))
-    html = html.replace("</body>", AI_HTML + SUBMIT_HTML + "\n</body>")
+    html = html.replace("</body>", AI_HTML + "\n</body>")
     out = d / "生词本.html"
     out.write_text(html, encoding="utf-8")
     return len(manual)
@@ -3593,7 +3604,7 @@ def build_tiku(sub, base_qid):
             .replace("__INDEX__", "../SCGSstudy/index.html"))
     html = html.replace("var MATH = __MATH_MODE__;",
                         "var MATH = %s;" % ("true" if mode == "math" else "false"))
-    html = html.replace("</body>", AI_HTML + SUBMIT_HTML + "\n</body>")
+    html = html.replace("</body>", AI_HTML + "\n</body>")
     out = d / "题库页.html"
     out.write_text(html, encoding="utf-8")
     return {"items": items, "out": out}
