@@ -6,39 +6,75 @@
 <title>贡献题目 · 专升本错题本</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-:root{--bg:#F4F3EE;--card:#FFFFFF;--border:#E4E3DD;--text:#1A1B1C;--sub:#6B7280;--accent:#9BBBF4;--accent-d:#33475C;--ok:#52C41A;}
-body{background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft YaHei',sans-serif;padding:16px;max-width:640px;margin:0 auto;line-height:1.6;}
+:root{
+  --np-neutral-0:#FFFFFF; --np-neutral-25:#FCFBFA; --np-neutral-50:#F8F7F5;
+  --np-neutral-100:#F1EFEA; --np-neutral-200:#E6E3DC; --np-neutral-300:#D5D1C8;
+  --np-neutral-400:#ABA69C; --np-neutral-500:#837E75; --np-neutral-600:#605B53;
+  --np-neutral-700:#3D3833; --np-neutral-800:#24211D; --np-neutral-900:#16140F;
+  --np-neutral-950:#0B0B0A;
+  --np-pine-50:#F1F9F5; --np-pine-100:#DEEFE5; --np-pine-200:#CCF8E7;
+  --np-pine-300:#B4CFCA; --np-pine-400:#A1D8D3; --np-pine-500:#457C6C;
+  --np-pine-600:#046461; --np-pine-700:#03514F; --np-pine-800:#023C3B; --np-pine-900:#022A29;
+  --np-green-100:#DFF2E6; --np-green-600:#1B7A4B; --np-green-700:#14603B;
+  --np-amber-100:#FBEDD8; --np-amber-600:#B87A1C; --np-amber-700:#8E5C10;
+  --np-red-100:#FBE4E0;   --np-red-600:#C0392B;   --np-red-700:#9A2C20;
+  --np-blue-100:#E4EDF4;  --np-blue-600:#35678F;
+  --accent:#046461; --accent-d:#03514F; --ok:var(--np-green-600);
+  --text:#0B0B0A; --sub:#605B53; --bg:#F8F7F5; --card:#F8F7F5; --border:#E6E3DC;
+  --bg-subtle:#F1EFEA; --bg-hover:#F1EFEA; --bg-active:#E6E3DC; --bg-selected:#DEEFE5;
+  --border-strong:#D5D1C8;
+  --shadow-e1:0 1px 2px rgba(11,11,10,.05);
+  --shadow-e2:0 4px 12px rgba(11,11,10,.07);
+  --shadow-e3:0 8px 24px rgba(11,11,10,.09);
+  --d-fast:140ms; --d-base:200ms; --d-slow:280ms;
+  --ease-out:cubic-bezier(0,0,.2,1);
+  --ease-standard:cubic-bezier(.2,.8,.2,1);
+  --font-sans:'Inter','PingFang SC','HarmonyOS Sans SC','Microsoft YaHei','Segoe UI',sans-serif;
+  --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-full:999px;
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);padding:16px;max-width:640px;margin:0 auto;line-height:1.6;}
 h1{font-size:20px;margin-bottom:4px;}
 .sub{color:var(--sub);font-size:13px;margin-bottom:20px;}
 .back{display:inline-block;color:var(--accent-d);text-decoration:none;font-size:13px;margin-bottom:16px;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;}
 label{display:block;font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text);}
 .row{margin-bottom:18px;}
-select,input,textarea{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:inherit;background:#FBFBF8;transition:border-color .2s;}
-select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent-d);}
+select,input,textarea{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:inherit;background:#FCFBFA;transition:border-color var(--d-fast) var(--ease-out);}
+select:focus,input:focus,textarea:focus{outline:none;border-color:#046461;}
 .subject-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px;}
-.subject-btn{padding:16px 8px;border:2px solid var(--border);border-radius:12px;background:#FBFBF8;cursor:pointer;text-align:center;transition:all .15s;font-size:14px;font-weight:600;}
-.subject-btn.active{border-color:var(--accent-d);background:rgba(155,187,244,0.15);color:var(--accent-d);}
+.subject-btn{padding:16px 8px;border:2px solid var(--border);border-radius:12px;background:#FCFBFA;cursor:pointer;text-align:center;transition:border-color var(--d-fast) var(--ease-out),background var(--d-fast) var(--ease-out),color var(--d-fast) var(--ease-out);font-size:14px;font-weight:600;}
+.subject-btn.active{border-color:#046461;background:var(--bg-selected);color:var(--accent-d);}
 .subject-btn .icon{font-size:24px;display:block;margin-bottom:4px;}
 .type-tags{display:flex;flex-wrap:wrap;gap:8px;}
-.type-tag{padding:8px 14px;border:1.5px solid var(--border);border-radius:20px;background:#FBFBF8;cursor:pointer;font-size:13px;transition:all .15s;}
-.type-tag.active{border-color:var(--accent-d);background:rgba(155,187,244,0.15);color:var(--accent-d);font-weight:600;}
-.btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;text-decoration:none;}
-.btn-primary{background:var(--accent-d);color:#fff;}
+.type-tag{padding:8px 14px;border:1.5px solid var(--border);border-radius:20px;background:#FCFBFA;cursor:pointer;font-size:13px;transition:border-color var(--d-fast) var(--ease-out),background var(--d-fast) var(--ease-out),color var(--d-fast) var(--ease-out);}
+.type-tag.active{border-color:#046461;background:var(--bg-selected);color:var(--accent-d);font-weight:600;}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:transform var(--d-fast) var(--ease-out),background var(--d-fast) var(--ease-out);text-align:center;text-decoration:none;}
+.btn-primary{background:#046461;color:#fff;}
+.btn-primary:hover{background:#03514F;}
 .btn-primary:active{transform:scale(0.98);}
 .btn-primary:disabled{background:#ccc;cursor:not-allowed;}
-.steps{background:rgba(155,187,244,0.1);border-left:3px solid var(--accent-d);padding:14px 16px;border-radius:0 10px 10px 0;margin-bottom:16px;font-size:13px;}
+.steps{background:var(--bg-selected);border-left:3px solid #046461;padding:14px 16px;border-radius:0 10px 10px 0;margin-bottom:16px;font-size:13px;}
 .steps strong{color:var(--accent-d);}
 .steps ol{margin:8px 0 0 18px;}
 .steps li{margin-bottom:6px;}
 .tip{font-size:12px;color:var(--sub);margin-top:6px;}
-.upload-hint{background:#FFF9E6;border:1px solid #FFE58F;border-radius:10px;padding:12px 14px;font-size:13px;color:#874D00;margin-bottom:16px;}
-.upload-hint strong{color:#613400;}
+.upload-hint{background:var(--np-amber-100);border:1px solid var(--np-amber-600);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--np-amber-700);margin-bottom:16px;}
+.upload-hint strong{color:var(--np-amber-700);}
 @media(max-width:480px){
   .subject-grid{grid-template-columns:1fr 1fr 1fr;}
   .subject-btn{padding:12px 4px;font-size:13px;}
   .subject-btn .icon{font-size:20px;}
 }
+/* 页面跳转过渡（View Transitions API 跨文档导航；不支持时优雅降级为直接跳转） */
+@view-transition{navigation:auto;}
+::view-transition-old(root){animation:page-out var(--d-base) var(--ease-out) both;}
+::view-transition-new(root){animation:page-in var(--d-slow) var(--ease-out) both;}
+@keyframes page-out{to{opacity:0;transform:translateY(-4px);}}
+@keyframes page-in{from{opacity:0;transform:translateY(4px);}}
+@media (prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation-duration:.01ms!important;}}
 </style>
 </head>
 <body>
@@ -111,7 +147,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent-d
   </div>
 
   <div id="qqSection" style="display:none;">
-    <div style="background:rgba(155,187,244,0.1);border:1.5px solid var(--accent);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px;">
+    <div style="background:var(--bg-selected);border:1.5px solid var(--accent);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px;">
       <div style="font-size:14px;color:var(--sub);margin-bottom:8px;">QQ群号</div>
       <div style="font-size:32px;font-weight:700;color:var(--accent-d);letter-spacing:2px;margin-bottom:12px;">290697057</div>
       <button class="btn btn-primary" onclick="copyQQ()" style="width:auto;display:inline-block;padding:10px 24px;">📋 复制群号</button>
@@ -120,8 +156,8 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent-d
   </div>
 </div>
 
-<div class="card" style="background:rgba(82,196,26,0.06);border-color:rgba(82,196,26,0.3);">
-  <label style="color:#3E8C13;">提交后会发生什么？</label>
+<div class="card" style="background:var(--np-green-100);border-color:var(--np-green-600);">
+  <label style="color:var(--np-green-700);">提交后会发生什么？</label>
   <div style="font-size:13px;color:var(--text);margin-top:8px;">
     1. 站长收到题目（邮件 1301115062@qq.com / QQ群 290697057）<br>
     2. 站长从图片/文件中提取题目内容<br>
