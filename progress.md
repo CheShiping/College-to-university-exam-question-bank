@@ -2,6 +2,10 @@
 
 > 原则：改动后在这里登记"做了什么 + 验证证据 + 下一步"。证据指向文件/命令结果，不要只写一句话。
 
+## 2026-09-17 · 新增根 README
+
+- 新增 `README.md`：站点链接、项目介绍（三科题库/错题/单词）、扩展题库方式（改数据源 / 构建器 / 网页投稿）。
+
 ## 2026-09-17 · 配置 GitHub Pages 部署
 
 - 新增 `.github/workflows/pages.yml`：push 到 main 后自动把 `_site` 部署到 Pages。`_site` = SCGSstudy 站点静态文件（index/manifest/图标/contribute/katex）+ 三科 `题库页.html` 与 `错题集/*.html` 同级摆放；入口页 `../计算机` 前缀经 sed 改为同级链接。
