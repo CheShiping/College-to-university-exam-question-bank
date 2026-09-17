@@ -4,9 +4,8 @@
 
 ## 2026-09-17 · 新增 GitHub 仓库悬浮按钮
 
-- **改动**：`SCGSstudy/build.py` AI_HTML 组件新增 `#ghFab`（26px 圆形、GitHub 官方 SVG 白标、`target="_blank"` 跳转 `https://github.com/CheShiping/College-to-university-exam-question-bank`、`data-tip="GitHub 仓库"`），置于浮动按钮组最底部（bottom:16px）；`#aiFab` 上移至 bottom:52px、`#subFab` 上移至 bottom:88px；AI 面板 bottom 50→86px（桌面 + ≤480px 移动端同改），Tooltip 选择器纳入 `#ghFab`。
-- **验证**：`python SCGSstudy/build.py` 全量重建成功；grep 产物 10 个 HTML 均含 `id="ghFab"` 且 href 指向目标仓库；`#ghFab{bottom:16px}`、`#aiFab{bottom:52px}`、tooltip 三按钮选择器就位。
-- 下一步：push 触发部署后在线复核新按钮跳转与 Tooltip。
+- **改动（v2：仅首页）**：按用户要求 GitHub 按钮只在首页显示——从共享 `AI_HTML` 拆出独立 `GITHUB_HTML` 组件（按钮 + 自含样式 + 同款 Tooltip），仅在 `build_index`（SCGSstudy/index.html）注入；`AI_HTML` 恢复 aiFab/subFab 共享 Tooltip，其余页面零 ghFab 痕迹。
+- **验证**：`python SCGSstudy/build.py` 全量重建成功；grep `id="ghFab"` 仅命中 `SCGSstudy/index.html`（10 个页面中 1 个）；抽查高数题库页含 `#aiFab::after,#subFab::after` Tooltip 且 `#aiPanel bottom:86px`、无 ghFab；`node --check` 不适用（py），build 全绿。
 
 ## 2026-09-17 · 修复 GitHub Pages 部署后公式不渲染 + 返回入口链接失效
 

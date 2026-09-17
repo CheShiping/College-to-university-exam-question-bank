@@ -1251,8 +1251,7 @@ def parse_tiku(path, subject):
 # AI 学习助手（悬浮聊天 + 全局 AIAsk 供页面调用）
 # ============================================================
 AI_HTML = r"""
-<div id="aiFab" data-tip="AI 学习助手" aria-label="AI 学习助手">🤖</div>
-<a id="ghFab" href="https://github.com/CheShiping/College-to-university-exam-question-bank" target="_blank" rel="noopener" data-tip="GitHub 仓库" aria-label="GitHub 仓库"><svg viewBox="0 0 16 16" width="12" height="12" fill="#fff" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+<div id="aiFab" data-tip="AI 学习助手" aria-label="AI 学习助手">🤖</div>
 <div id="aiPanel">
   <div id="aiHead"><span>AI 学习助手</span><button id="aiClose" aria-label="关闭">×</button></div>
   <div id="aiMsgs"></div>
@@ -1266,12 +1265,8 @@ AI_HTML = r"""
   background:linear-gradient(135deg,#046461,#03514F);color:#fff;font-size:12px;
   display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;
   box-shadow:0 4px 14px rgba(4,100,97,.4);-webkit-tap-highlight-color:transparent;user-select:none;}
-#ghFab{position:fixed;right:16px;bottom:16px;width:26px;height:26px;border-radius:50%;
-  background:linear-gradient(135deg,#046461,#03514F);color:#fff;
-  display:flex;align-items:center;justify-content:center;z-index:9999;text-decoration:none;
-  box-shadow:0 4px 14px rgba(4,100,97,.4);-webkit-tap-highlight-color:transparent;user-select:none;}
 /* Tooltip（设计系统浮层族 §4.14：深底白字 12px / 6px 10px / radius-sm / shadow-e2 / 300ms 延迟 / fast ease-out） */
-#aiFab::after,#subFab::after,#ghFab::after{
+#aiFab::after,#subFab::after{
   content:attr(data-tip);
   position:absolute;right:calc(100% + 8px);top:50%;transform-origin:right center;
   transform:translateY(-50%) translateX(-4px);
@@ -1281,7 +1276,7 @@ AI_HTML = r"""
   transition:opacity var(--d-fast) var(--ease-out),transform var(--d-fast) var(--ease-out);
   transition-delay:0s;
 }
-#aiFab:hover::after,#aiFab:focus-visible::after,#subFab:hover::after,#subFab:focus-visible::after,#ghFab:hover::after,#ghFab:focus-visible::after{
+#aiFab:hover::after,#aiFab:focus-visible::after,#subFab:hover::after,#subFab:focus-visible::after{
   opacity:1;transform:translateY(-50%) translateX(0);transition-delay:.3s;
 }
 #aiPanel{position:fixed;right:16px;bottom:86px;width:min(360px,calc(100vw - 32px));height:min(480px,calc(100vh - 120px));
@@ -1404,15 +1399,38 @@ AI_HTML = r"""
   }
   if(send) send.addEventListener("click",function(){ var v=input.value; if(v.trim()){ input.value=""; ask(v); } });
   if(input) input.addEventListener("keydown",function(e){ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); var v=input.value; if(v.trim()){ input.value=""; ask(v); } } });
-  window.AIAsk=ask;
-})();
-</script>
-"""
-
-
-# ============================================================
-# 投稿题目组件（模态框 + 浮动按钮 + 提交逻辑）
-# 数据 POST 到 https://ai.scgsstudy.top/api/submit
+  window.AIAsk=ask;
+})();
+</script>
+"""
+# ============================================================
+# 首页专用：GitHub 仓库悬浮按钮（仅入口页注入）
+# 置于按钮组最底部；AI 面板/按钮位置见 AI_HTML（aiFab 52 / subFab 88）
+# ============================================================
+GITHUB_HTML = r"""
+<a id="ghFab" href="https://github.com/CheShiping/College-to-university-exam-question-bank" target="_blank" rel="noopener" data-tip="GitHub 仓库" aria-label="GitHub 仓库"><svg viewBox="0 0 16 16" width="12" height="12" fill="#fff" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+<style>
+#ghFab{position:fixed;right:16px;bottom:16px;width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,#046461,#03514F);color:#fff;
+  display:flex;align-items:center;justify-content:center;z-index:9999;text-decoration:none;
+  box-shadow:0 4px 14px rgba(4,100,97,.4);-webkit-tap-highlight-color:transparent;user-select:none;}
+/* Tooltip 与 AI/投稿按钮同款（设计系统浮层族 §4.14） */
+#ghFab::after{content:attr(data-tip);
+  position:absolute;right:calc(100% + 8px);top:50%;transform-origin:right center;
+  transform:translateY(-50%) translateX(-4px);
+  background:#16140F;color:#fff;font-size:12px;line-height:1;white-space:nowrap;
+  padding:6px 10px;border-radius:var(--radius-sm);box-shadow:var(--shadow-e2);
+  pointer-events:none;opacity:0;
+  transition:opacity var(--d-fast) var(--ease-out),transform var(--d-fast) var(--ease-out);
+  transition-delay:0s;}
+#ghFab:hover::after,#ghFab:focus-visible::after{opacity:1;transform:translateY(-50%) translateX(0);transition-delay:.3s;}
+</style>
+"""
+
+
+# ============================================================
+# 投稿题目组件（模态框 + 浮动按钮 + 提交逻辑）
+# 数据 POST 到 https://ai.scgsstudy.top/api/submit
 # ============================================================
 SUBMIT_HTML = r"""
 <div id="subModal" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(15,23,42,0.55);backdrop-filter:blur(3px);justify-content:center;align-items:center;padding:16px;">
@@ -3624,7 +3642,7 @@ def build_index(per_subject, tiku_info):
             .replace("__WORD_CARDS__", word_cards)
             .replace("__DAILY_JSON__", js_safe(daily_data))
             .replace("__QUALITY_JSON__", js_safe(quality)))
-    html = html.replace("</body>", AI_HTML + SUBMIT_HTML + "\n</body>")
+    html = html.replace("</body>", AI_HTML + SUBMIT_HTML + GITHUB_HTML + "\n</body>")
     out = BASE / "index.html"
     out.write_text(html, encoding="utf-8")
 
