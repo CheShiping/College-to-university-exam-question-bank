@@ -1,0 +1,49 @@
+{
+  "project": "专升本三科题库与错题本",
+  "updated": "2026-09-17",
+  "note": "多余的状态字段只标用 evidence 证明的事实；未验证不标记 done。",
+  "features": [
+    {
+      "id": "bank_computer",
+      "name": "计算机题库（题库.md + 题库页.html）",
+      "status": "in_progress",
+      "evidence": "存在 计算机/题库.md 与 dummyback 题库页.html；题目带 真题 前缀与 答案/解析",
+      "next": "补充资料来源精确到省/年，补齐章节覆盖"
+    },
+    {
+      "id": "bank_math",
+      "name": "高数题库（专题 + LaTeX）",
+      "status": "in_progress",
+      "evidence": "高数/题库.md 含 专题一·极限与连续 等分节，行内 $...$ 公式",
+      "next": "确认各专题是否覆盖考纲；核对 来源 字段省/年"
+    },
+    {
+      "id": "bank_english",
+      "name": "英语题库 + 单词卡/生词本",
+      "status": "in_progress",
+      "evidence": "英语/题库.md 与 单词卡.md、生词本.md、单词本.md 均存在",
+      "next": "确认词表与题型范围符合四川专升本考试说明"
+    },
+    {
+      "id": "errorbook_system",
+      "name": "三科错题本（错题本.md + 复习页.html）",
+      "status": "in_progress",
+      "evidence": "各科 错题集/错题本.md 存在，复习页.html 已生成；错题本.md 保持 gitignore 不提交",
+      "next": "按 Q-序号 格式入库新错题，累计 错误次数"
+    },
+    {
+      "id": "zhenti_collection",
+      "name": "真题收集（真题收集/ 目录）",
+      "status": "pending",
+      "evidence": "暂无可用证据，目录存在但内容未审计",
+      "next": "审计 真题收集/ 目录内容并登记到 feature/progress"
+    },
+    {
+      "id": "build_scripts",
+      "name": "生成/清理脚本（*.mjs / *.py）",
+      "status": "in_progress",
+      "evidence": "存在 build_plan.mjs、rebuild_daily.mjs、update_official.mjs 等；node v22 可运行",
+      "next": "对每个脚本跑 node --check 确认语法；整理到统一 build 入口（若有）"
+    }
+  ]
+}

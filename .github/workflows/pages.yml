@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assemble site root (SCGSstudy 站点 + 三科目录同级)
+        run: |
+          mkdir -p _site/计算机 _site/高数 _site/英语
+          # 站点静态文件放到根：入口页、manifest、图标、投稿页、KaTeX
+          cp SCGSstudy/index.html     _site/index.html
+          cp SCGSstudy/manifest.json  _site/manifest.json
+          cp SCGSstudy/icon-192.png   _site/icon-192.png
+          cp SCGSstudy/icon-512.png   _site/icon-512.png
+          cp SCGSstudy/contribute.html _site/contribute.html
+          cp -r SCGSstudy/katex        _site/katex
+          # 入口页原用 ../计算机（本地平级用法）；站点根下改为同级链接
+          sed -i 's|\.\./计算机|计算机|g; s|\.\./高数|高数|g; s|\.\./英语|英语|g' _site/index.html
+          # 三科：题库页面 + 错题复习页
+          for d in 计算机 高数 英语; do
+            cp "$d/题库.md"      "_site/$d/" 2>/dev/null || true
+            cp "$d/题库页.html"  "_site/$d/" 2>/dev/null || true
+            if [ -d "$d/错题集" ]; then
+              mkdir -p "_site/$d/错题集"
+              cp "$d"/错题集/*.html "_site/$d/错题集/" 2>/dev/null || true
+            fi
+          done
+
+      - name: Verify index links point to siblings (no ../ left)
+        run: |
+          if grep -qE '\.\./'"$(echo 计算机)"'|\.\./' _site/index.html; then
+            echo "尚残留 ../ 链接"; grep -nE '\.\./' _site/index.html || true
+          else
+            echo "OK：入口页已无 ../ 前缀"
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
