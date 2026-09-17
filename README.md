@@ -4,11 +4,9 @@
 
 ## 🔗 在线访问（GitHub Pages）
 
-```
-https://checkshiping.github.io/College-to-university-exam-question-bank/
-```
+点击直达：[专升本学习平台](https://cheshiping.github.io/College-to-university-exam-question-bank/)
 
-推送 `main` 分支即可自动重新部署，无需手动操作。
+> 推送 `main` 分支即可自动重新部署，无需手动操作。
 
 ## 📖 项目介绍
 

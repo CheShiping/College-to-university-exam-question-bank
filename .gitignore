@@ -14,6 +14,7 @@ _backup_errorbook/
 *.bak
 *.backup
 SCGSstudy/.cf_token
+SCGSstudy/.admin_key
 SCGSstudy/_tmp_*
 SCGSstudy/_test_*
 
